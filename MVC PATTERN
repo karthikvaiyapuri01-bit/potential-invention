@@ -1,0 +1,79 @@
+## MVC Pattern — Simple Explanation
+
+ **MVC (Model–View–Controller)** is a software design pattern that separates an application into three parts:
+
+ - **Model:** Handles data and business logic.
+- **View:** Displays the user interface.
+- **Controller:** Receives user input and connects the Model with the View.
+
+ ### Example
+
+```
+User
+ ↓
+Controller
+ ↓
+Model
+ ↓
+Controller
+ ↓
+View
+ ↓
+User
+```
+
+ ### Simple MVC Code Example (Java)
+
+```
+// Model
+class Student {
+    String name = "John";
+
+    String getName() {
+        return name;
+    }
+}
+
+// View
+class StudentView {
+    void displayStudent(String name) {
+        System.out.println("Student Name: " + name);
+    }
+}
+
+// Controller
+class StudentController {
+    Student model;
+    StudentView view;
+
+    StudentController(Student model, StudentView view) {
+        this.model = model;
+        this.view = view;
+    }
+
+    void updateView() {
+        view.displayStudent(model.getName());
+    }
+}
+
+// Main
+public class Main {
+    public static void main(String[] args) {
+        Student model = new Student();
+        StudentView view = new StudentView();
+
+        StudentController controller =
+            new StudentController(model, view);
+
+        controller.updateView();
+    }
+}
+```
+
+ **Output:**
+
+```
+Student Name: John
+```
+
+ **In short:** Model = **Data**, View = **UI**, Controller = **Control/Input**.
