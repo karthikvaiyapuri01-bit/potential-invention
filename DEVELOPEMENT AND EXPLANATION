@@ -1,0 +1,221 @@
+## MVC Pattern — Development, Explanation, and Coding
+
+ ### 1\. Introduction
+
+ **MVC (Model–View–Controller)** is a software architectural pattern used to develop applications by separating the application into three interconnected components:
+
+ 1. **Model**
+2. **View**
+3. **Controller**
+
+ This separation makes the application easier to **develop, test, maintain, and modify**.
+
+---
+
+ ## 2\. Components of MVC
+
+ ### Model
+
+ The **Model** manages the application's data and business logic.
+
+ **Responsibilities:**
+
+ - Stores data.
+- Retrieves data.
+- Updates data.
+- Performs business operations.
+
+ Example:
+
+```
+class Student {
+    private String name;
+    private int age;
+
+    Student(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    String getName() {
+        return name;
+    }
+
+    int getAge() {
+        return age;
+    }
+}
+```
+
+---
+
+ ### View
+
+ The **View** is responsible for displaying information to the user.
+
+```
+class StudentView {
+
+    void displayStudent(String name, int age) {
+        System.out.println("Student Name: " + name);
+        System.out.println("Student Age: " + age);
+    }
+}
+```
+
+ The View should mainly focus on **presentation** rather than business logic.
+
+---
+
+ ### Controller
+
+ The **Controller** receives user requests and controls the flow between the Model and View.
+
+```
+class StudentController {
+
+    private Student model;
+    private StudentView view;
+
+    StudentController(Student model, StudentView view) {
+        this.model = model;
+        this.view = view;
+    }
+
+    void updateView() {
+        view.displayStudent(
+            model.getName(),
+            model.getAge()
+        );
+    }
+}
+```
+
+---
+
+ ## 3\. Complete MVC Program
+
+```
+// Model
+class Student {
+    private String name;
+    private int age;
+
+    Student(String name, int age) {
+        this.name = name;
+        this.age = age;
+    }
+
+    String getName() {
+        return name;
+    }
+
+    int getAge() {
+        return age;
+    }
+}
+
+// View
+class StudentView {
+
+    void displayStudent(String name, int age) {
+        System.out.println("Student Details");
+        System.out.println("----------------");
+        System.out.println("Name : " + name);
+        System.out.println("Age  : " + age);
+    }
+}
+
+// Controller
+class StudentController {
+
+    private Student model;
+    private StudentView view;
+
+    StudentController(Student model, StudentView view) {
+        this.model = model;
+        this.view = view;
+    }
+
+    void updateView() {
+        view.displayStudent(
+            model.getName(),
+            model.getAge()
+        );
+    }
+}
+
+// Main class
+public class Main {
+
+    public static void main(String[] args) {
+
+        Student model = new Student("Arun", 20);
+
+        StudentView view = new StudentView();
+
+        StudentController controller =
+            new StudentController(model, view);
+
+        controller.updateView();
+    }
+}
+```
+
+ ### Output
+
+```
+Student Details
+----------------
+Name : Arun
+Age  : 20
+```
+
+---
+
+ ## 4\. Development Flow of MVC
+
+ The development process generally follows this flow:
+
+```
+          USER
+            |
+            ↓
+       CONTROLLER
+            |
+            ↓
+          MODEL
+            |
+            ↓
+       CONTROLLER
+            |
+            ↓
+           VIEW
+            |
+            ↓
+          USER
+```
+
+ For example, when a user requests student information:
+
+ 1. The **User** makes a request.
+2. The **Controller** receives the request.
+3. The **Controller** asks the **Model** for student data.
+4. The **Model** provides the data.
+5. The **Controller** sends the data to the **View**.
+6. The **View** displays the information to the user.
+
+---
+
+ ## 5\. Advantages of MVC
+
+ - **Separation of concerns:** Each component has a specific responsibility.
+- **Easy maintenance:** Changes in the UI generally do not require changes to the data layer.
+- **Code reusability:** Models and other components can be reused.
+- **Easy testing:** Components can be tested separately.
+- **Team development:** Different developers can work on Model, View, and Controller independently.
+- **Scalability:** Large applications are easier to organize.
+
+ ## 6\. Conclusion
+
+ The **MVC pattern** divides an application into **Model, View, and Controller**. The Model manages data, the View presents data, and the Controller handles requests and coordinates the other components. Because responsibilities are separated, MVC is widely used for developing structured and maintainable software applications.
