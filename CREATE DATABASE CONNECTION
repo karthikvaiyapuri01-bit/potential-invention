@@ -1,0 +1,160 @@
+## Database Connection — Explanation and Coding
+
+ A **database connection** is used to connect an application to a database so that the application can **insert, retrieve, update, and delete data**.
+
+ For example, in a Java application, we can use **JDBC (Java Database Connectivity)** to connect to a MySQL database.
+
+ ### 1\. Requirements
+
+ - Java JDK
+- MySQL Server
+- MySQL database
+- MySQL JDBC Driver
+
+ ### 2\. Create Database
+
+ First, create a database in MySQL:
+
+```
+CREATE DATABASE studentdb;
+
+USE studentdb;
+
+CREATE TABLE student (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100),
+    age INT
+);
+```
+
+ ### 3\. Java Database Connection
+
+```
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+
+public class DatabaseConnection {
+
+    public static void main(String[] args) {
+
+        String url = "jdbc:mysql://localhost:3306/studentdb";
+        String username = "root";
+        String password = "root";
+
+        try {
+            Connection connection =
+                DriverManager.getConnection(url, username, password);
+
+            System.out.println("Database connected successfully!");
+
+            connection.close();
+
+        } catch (SQLException e) {
+            System.out.println("Database connection failed!");
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+ ### 4\. Explanation
+
+```
+String url = "jdbc:mysql://localhost:3306/studentdb";
+```
+
+ This specifies the **MySQL database location**.
+
+ - `jdbc:mysql` → JDBC MySQL connection
+- `localhost` → Database server is on the same computer
+- `3306` → Default MySQL port
+- `studentdb` → Database name
+
+```
+Connection connection =
+    DriverManager.getConnection(url, username, password);
+```
+
+ This establishes the connection between the **Java application and MySQL database**.
+
+```
+connection.close();
+```
+
+ This closes the database connection after the operation is completed.
+
+ ### 5\. Insert Data Using JDBC
+
+```
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+
+public class InsertStudent {
+
+    public static void main(String[] args) {
+
+        String url = "jdbc:mysql://localhost:3306/studentdb";
+        String username = "root";
+        String password = "root";
+
+        String sql = "INSERT INTO student (name, age) VALUES (?, ?)";
+
+        try {
+            Connection connection =
+                DriverManager.getConnection(url, username, password);
+
+            PreparedStatement statement =
+                connection.prepareStatement(sql);
+
+            statement.setString(1, "Arun");
+            statement.setInt(2, 20);
+
+            statement.executeUpdate();
+
+            System.out.println("Student inserted successfully!");
+
+            statement.close();
+            connection.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
+```
+
+ ### Output
+
+```
+Student inserted successfully!
+```
+
+ The data will be stored in the `student` table:
+
+ | id | name | age |
+| --- | --- | --- |
+| 1 | Arun | 20 |
+
+### 6\. Database Connection in MVC
+
+ In an **MVC application**, the database connection is normally used by the **Model/DAO layer**:
+
+```
+User
+  ↓
+Controller
+  ↓
+Model / DAO
+  ↓
+Database
+  ↓
+Model / DAO
+  ↓
+Controller
+  ↓
+View
+```
+
+ This keeps the database code separate from the user interface and controller code.
